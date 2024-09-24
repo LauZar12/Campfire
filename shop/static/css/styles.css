@@ -170,7 +170,41 @@ button[type="submit"]:hover {
     background-color: #FF5C2A; 
 }
 
-/* General styles for the games page */
+/* Games styles */
+
+.search-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+
+.search-input {
+    width: 300px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 2px solid #ffcc00;
+    outline: none;
+    font-size: 16px;
+}
+
+
+.search-btn {
+    padding: 10px 20px;
+    background-color: #ff6633;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-left: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.search-btn:hover {
+    background-color: #ff3300;
+}
+
 .games-container {
     padding: 20px;
     text-align: center;

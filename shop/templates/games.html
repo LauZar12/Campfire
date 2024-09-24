@@ -1,51 +1,39 @@
 {% extends 'base.html' %}
 
-{% block title %}
-    Home Page - Online Store
-{% endblock %}
+{% block title %}Home Page - Online Store{% endblock %}
 
 {% block content %}
-
 <h1>List of Games</h1>
 
-<form action="{% url 'games' %}" method="post">
-  {% csrf_token %}
-  <input type="text" name="search">
-  <button type="submit">
-    <h1>search</h1>
-  </button>
-</form>
-
-<ul>
-  {% for game in games %}
-  <li>{{ game.title }} by {{ game.author }} - ${{ game.price }}</li>
-  <p>{{ game.description }}</p>
-
-  <form action="{% url 'game' %}" method="get">
-    <input type="hidden" name="game_id" value="{{ game.id }}">
-    <button type="submit">
-      <h1>See</h1>
-    </button>
+<!-- Formulario de búsqueda -->
+<div class="search-container">
+  <form action="{% url 'games' %}" method="post">
+      {% csrf_token %}
+      <input type="text" name="search" class="search-input" placeholder="Search for a game...">
+      <button type="submit" class="search-btn">
+          Search
+      </button>
   </form>
+</div>
+
+<!-- Contenedor de los juegos -->
 <div class="games-container">
-    <h1>List of Games</h1>
     <div class="games-grid">
         {% for game in games %}
         <div class="game-card">
             <div class="game-info">
                 <h2>{{ game.title }}</h2>
-                <p>{{ game.author }} - ${{ game.price }}</p>
+                <p>By {{ game.author }} - ${{ game.price }}</p>
                 <p>{{ game.description }}</p>
             </div>
             <div class="game-buttons">
-                <!-- See Button -->
-                <form action="{% url 'game' %}" method="post">
-                    {% csrf_token %}
+                <!-- Botón de ver juego -->
+                <form action="{% url 'game' %}" method="get">
                     <input type="hidden" name="game_id" value="{{ game.id }}">
                     <button type="submit" class="btn see-btn">See</button>
                 </form>
 
-                <!-- Buy Button -->
+                <!-- Botón de comprar juego -->
                 <form action="{% url 'games' %}" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="game_id" value="{{ game.id }}">
@@ -57,3 +45,4 @@
     </div>
 </div>
 {% endblock %}
+
