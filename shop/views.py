@@ -5,6 +5,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import login
 from .forms import SignUpForm
 from django.urls import reverse_lazy
+from .models import Game
 
 
 # =========================HOME=========================
@@ -42,11 +43,14 @@ class Games(LoginRequiredMixin, View):
     template_name = "games.html"
 
     def get(self, request):
-        return render(request, self.template_name, {})
+        games = Game.objects.all()
+        return render(request, self.template_name, {
+                      'games': games,
+                      })
 
 
 # =========================GAME=========================
-class Game(LoginRequiredMixin, View):
+class GameView(LoginRequiredMixin, View):
     template_name = "game.html"
 
     def get(self, request):
