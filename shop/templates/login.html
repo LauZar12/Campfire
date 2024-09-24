@@ -1,12 +1,24 @@
 {% extends 'base.html' %}
-{% block title %}'Home Page - Online Store'{% endblock %}
+
+{% block title %}Login{% endblock %}
+
 {% block content %}
-
-<h2>Login</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit" class="btn btn-primary">Login</button>
-</form>
-
+<div class="login-page">
+    <div class="login-container">
+        <h2>Login</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+</div>
 {% endblock %}
+
