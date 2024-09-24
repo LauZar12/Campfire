@@ -7,6 +7,15 @@
 <p>Price: ${{ game.price }}</p>
 <p>Description: {{ game.description }}</p>
 
+<p>Categories:</p>
+<ul>
+  {% for category in categories %}
+  <li>{{ category }}</li>
+  {% empty %}
+  <li>No categories available.</li>
+  {% endfor %}
+</ul>
+
 <form action="{% url 'game' %}" method="post">
   {% csrf_token %}
   <input type="hidden" name="game_id" value="{{ game.id }}">
