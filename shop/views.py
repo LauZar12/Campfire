@@ -5,7 +5,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import login
 from .forms import SignUpForm
 from django.urls import reverse_lazy
-from .models import Game, ShoppingCart, CartItem, GameOwner
+from .models import Game, ShoppingCart, CartItem, GameOwner, Review
 
 
 # =========================HOME=========================
@@ -63,10 +63,32 @@ class Games(LoginRequiredMixin, View):
 class GameView(LoginRequiredMixin, View):
     template_name = "game.html"
 
+    def get(self, request):
+        game_id = request.GET.get('game_id')
+        game = get_object_or_404(Game, id=game_id)
+
+        reviews = Review.objects.filter(game=game)
+
+        return render(request, self.template_name, {
+            'game': game,
+            'reviews': reviews
+        })
+
     def post(self, request):
-        id = request.POST.get('game_id')
-        game = get_object_or_404(Game, id=id)
-        return render(request, self.template_name, {'game': game})
+        game_id = request.POST.get('game_id')
+        game = get_object_or_404(Game, id=game_id)
+
+        if 'comment' in request.POST:
+            comment = request.POST.get('comment')
+
+            Review.objects.create(user=request.user, game=game, comment=comment)
+
+        reviews = Review.objects.filter(game=game)
+
+        return render(request, self.template_name, {
+            'game': game,
+            'reviews': reviews
+        })
 
 
 # =========================CART=========================
@@ -86,7 +108,10 @@ class Cart(LoginRequiredMixin, View):
 
         for game_id in games_id:
             game = get_object_or_404(Game, id=game_id)
-            GameOwner.objects.create(user=request.user, game=game)
+
+            game_owner, created = GameOwner.objects.get_or_create(game=game, user=request.user)
+            if created:
+                game_owner.save()
 
         shopping_cart.cart_items.all().delete()
 

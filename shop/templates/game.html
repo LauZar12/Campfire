@@ -7,4 +7,24 @@
 <p>Price: ${{ game.price }}</p>
 <p>Description: {{ game.description }}</p>
 
+<form action="{% url 'game' %}" method="post">
+  {% csrf_token %}
+  <input type="hidden" name="game_id" value="{{ game.id }}">
+  <input type="text" name="comment">
+  <button type="submit">
+    <h1>See</h1>
+  </button>
+</form>
+
+<h2>Reviews</h2>
+<ul>
+  {% for review in reviews %}
+  <li>
+    <strong>{{ review.user.username }}:</strong> {{ review.comment }}
+  </li>
+  {% empty %}
+  <p>No reviews yet for this game.</p>
+  {% endfor %}
+</ul>
+
 {% endblock %}

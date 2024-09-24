@@ -46,3 +46,4 @@ class GameOwner(models.Model):
 class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='review')
     game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='review')
+    comment = models.CharField(max_length=255)

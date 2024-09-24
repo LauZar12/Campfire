@@ -3,13 +3,21 @@
 {% block content %}
 
 <h1>List of Games</h1>
+
+<form action="{% url 'games' %}" method="post">
+  {% csrf_token %}
+  <input type="text" name="search">
+  <button type="submit">
+    <h1>search</h1>
+  </button>
+</form>
+
 <ul>
   {% for game in games %}
   <li>{{ game.title }} by {{ game.author }} - ${{ game.price }}</li>
   <p>{{ game.description }}</p>
 
-  <form action="{% url 'game' %}" method="post">
-    {% csrf_token %}
+  <form action="{% url 'game' %}" method="get">
     <input type="hidden" name="game_id" value="{{ game.id }}">
     <button type="submit">
       <h1>See</h1>
