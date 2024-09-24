@@ -2,6 +2,11 @@
 {% block title %}'Home Page - Online Store'{% endblock %}
 {% block content %}
 
-login
+<h2>Login</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit" class="btn btn-primary">Login</button>
+</form>
 
 {% endblock %}

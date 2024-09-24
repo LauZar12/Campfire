@@ -1,5 +1,10 @@
 from django.shortcuts import render
-from django.views.generic import View
+from django.views.generic import View, CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth import login
+from .forms import SignUpForm
+from django.urls import reverse_lazy
 
 
 # =========================HOME=========================
@@ -11,23 +16,29 @@ class Home(View):
 
 
 # =========================LOGIN=========================
-class Login(View):
-    template_name = "login.html"
+class Login(LoginView):
+    template_name = 'login.html'
 
-    def get(self, request):
-        return render(request, self.template_name, {})
+
+class Logout(LogoutView):
+    template_name = 'logout.html'
 
 
 # =========================SIGNUP=========================
-class Signup(View):
-    template_name = "signup.html"
+class Signup(CreateView):
+    form_class = SignUpForm
+    template_name = 'signup.html'
+    success_url = reverse_lazy('login')  # Redirect to login page after successful registration
 
-    def get(self, request):
-        return render(request, self.template_name, {})
+    def form_valid(self, form):
+        # Log in the user immediately after registration
+        user = form.save()
+        login(self.request, user)
+        return super().form_valid(form)
 
 
 # =========================GAMES=========================
-class Games(View):
+class Games(LoginRequiredMixin, View):
     template_name = "games.html"
 
     def get(self, request):
@@ -35,7 +46,7 @@ class Games(View):
 
 
 # =========================GAME=========================
-class Game(View):
+class Game(LoginRequiredMixin, View):
     template_name = "game.html"
 
     def get(self, request):
@@ -43,8 +54,16 @@ class Game(View):
 
 
 # =========================CART=========================
-class Cart(View):
+class Cart(LoginRequiredMixin, View):
     template_name = "cart.html"
+
+    def get(self, request):
+        return render(request, self.template_name, {})
+
+
+# =========================ACCOUNT=========================
+class Account(LoginRequiredMixin, View):
+    template_name = "account.html"
 
     def get(self, request):
         return render(request, self.template_name, {})
