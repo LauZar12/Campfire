@@ -1,0 +1,99 @@
+/* General Styles */
+body {
+    font-family: 'Press Start 2P', cursive;
+    background-color: #4A2558; /* Púrpura oscuro */
+    color: #FFD700; /* Amarillo */
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* Navbar Styles */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #6B3A8A; /* Púrpura intermedio */
+}
+
+
+.navbar .logo img {
+    width: 60px;
+    height: auto;
+}
+
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+}
+
+
+.nav-links li {
+    display: inline;
+}
+
+
+.nav-links li a {
+    text-decoration: none;
+    font-size: 16px;
+    color: #FFD700; /* Amarillo */
+    padding: 10px;
+    transition: background-color 0.3s ease;
+}
+
+
+.nav-links li a:hover {
+    background-color: #FF6B3D; /* Naranja */
+    color: white;
+    border-radius: 5px;
+}
+
+
+/* Container Styles */
+.container {
+    flex: 1;
+    padding: 20px;
+}
+
+
+/* Footer Styles */
+.footer {
+    background-color: #6B3A8A; /* Púrpura intermedio */
+    color: #FFD700;
+    padding: 20px;
+    text-align: center;
+    margin-top: auto;
+}
+
+
+.footer ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+
+.footer ul li {
+    display: inline;
+}
+
+
+.footer ul li a {
+    text-decoration: none;
+    color: #FFD700;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+
+.footer ul li a:hover {
+    color: #FF6B3D;
+}
