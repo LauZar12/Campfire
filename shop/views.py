@@ -88,7 +88,7 @@ class GameView(LoginRequiredMixin, View):
             'game': game,
             'reviews': reviews,
             'categories': category_names,
-            })
+        })
 
     def post(self, request):
         game_id = request.POST.get('game_id')
@@ -102,9 +102,13 @@ class GameView(LoginRequiredMixin, View):
 
         reviews = Review.objects.filter(game=game)
 
+        categories = game.game_categories.all()
+        category_names = [category.category.name for category in categories]
+
         return render(request, self.template_name, {
             'game': game,
-            'reviews': reviews
+            'reviews': reviews,
+            'categories': category_names,
         })
 
 
@@ -144,4 +148,7 @@ class Account(LoginRequiredMixin, View):
 
     def get(self, request):
         owned_games = GameOwner.objects.filter(user=request.user)
-        return render(request, self.template_name, {'owned_games': owned_games})
+        return render(request, self.template_name, {
+                      'user': request.user,
+                      'owned_games': owned_games
+                      })
