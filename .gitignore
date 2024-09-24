@@ -1,1 +1,3 @@
 *.pyc
+CampFire/__pycache__/*.pyc
+shop/__pycache__/*.pyc
