@@ -5,7 +5,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   {% load static %}
-  <link href="{% static 'pages/app.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/base.css' %}" rel="stylesheet" />
   <title>{% block title %}'Online Store'{% endblock %}</title>
 </head>
 
@@ -15,6 +15,7 @@
   <a class="nav-link active" href="{% url 'signup' %}">SignUp</a>
   <a class="nav-link active" href="{% url 'games' %}">Games</a>
   <a class="nav-link active" href="{% url 'cart' %}">Cart</a>
+  <a class="nav-link active" href="{% url 'account' %}">Account</a>
 
   <br>
 

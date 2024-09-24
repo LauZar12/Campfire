@@ -2,17 +2,11 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-# ========== USER ==========
-class Costumer(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    credit_card = models.CharField(max_length=255)
-
-
 # ========== GAME ==========
 class Game(models.Model):
     title = models.CharField(max_length=255)
     author = models.CharField(max_length=255)
-    price = models.DecimalField(max_digits=10)
+    price = models.IntegerField()
     description = models.TextField()
 
 
