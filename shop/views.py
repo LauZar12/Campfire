@@ -1,11 +1,11 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import View, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import login
 from .forms import SignUpForm
 from django.urls import reverse_lazy
-from .models import Game
+from .models import Game, ShoppingCart, CartItem
 
 
 # =========================HOME=========================
@@ -64,7 +64,19 @@ class Cart(LoginRequiredMixin, View):
     template_name = "cart.html"
 
     def get(self, request):
-        return render(request, self.template_name, {})
+        shopping_cart, created = ShoppingCart.objects.get_or_create(user=request.user)
+        cart_items = shopping_cart.cart_items.all()
+        return render(request, self.template_name, {'cart_items': cart_items})
+
+    def post(self, request):
+        game_id = request.POST.get('game_id')
+        game = get_object_or_404(Game, id=game_id)
+        shopping_cart, created = ShoppingCart.objects.get_or_create(user=request.user)
+        cart_item, created = CartItem.objects.get_or_create(shopping_cart=shopping_cart, game=game)
+        if not created:
+            cart_item.quantity += 1
+            cart_item.save()
+        return redirect('cart')
 
 
 # =========================ACCOUNT=========================
