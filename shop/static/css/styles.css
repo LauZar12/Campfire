@@ -100,17 +100,19 @@ body {
 
 
 /* login styles*/
+
+
 .login-page {
     background-image: url("/static/images/fondo.png");
-    background-size: cover;
+    background-size: cover; 
     background-position: center; 
     background-repeat: no-repeat; 
     min-height: 100vh; 
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-top: 90px;
 }
+
 
 .login-container {
     background-color: rgba(0, 0, 0, 0.7); 
@@ -166,5 +168,75 @@ button[type="submit"] {
 
 button[type="submit"]:hover {
     background-color: #FF5C2A; 
+}
+
+/* General styles for the games page */
+.games-container {
+    padding: 20px;
+    text-align: center;
+}
+
+.games-container h1 {
+    color: #ffcb04;
+    margin-bottom: 30px;
+}
+
+.games-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.game-card {
+    background-color: #FF6633;
+    border-radius: 10px;
+    padding: 20px;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.game-card:hover {
+    transform: scale(1.05);
+}
+
+.game-info h2 {
+    color: white;
+    margin-bottom: 10px;
+}
+
+.game-info p {
+    color: white;
+}
+
+.game-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.see-btn {
+    background-color: #ffcb04;
+    color: #662d91;
+}
+
+.buy-btn {
+    background-color: #662d91;
+    color: white;
+}
+
+.see-btn:hover, .buy-btn:hover {
+    opacity: 0.8;
 }
 
