@@ -7,6 +7,13 @@
   {% for game in games %}
   <li>{{ game.title }} by {{ game.author }} - ${{ game.price }}</li>
   <p>{{ game.description }}</p>
+  <form action="{% url 'game' %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="game_id" value="{{ game.id }}">
+    <button type="submit">
+      <h1>See</h1>
+    </button>
+  </form>
   {% endfor %}
 </ul>
 

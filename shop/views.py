@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.generic import View, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
@@ -53,8 +53,10 @@ class Games(LoginRequiredMixin, View):
 class GameView(LoginRequiredMixin, View):
     template_name = "game.html"
 
-    def get(self, request):
-        return render(request, self.template_name, {})
+    def post(self, request):
+        id = request.POST.get('game_id')
+        game = get_object_or_404(Game, id=id)
+        return render(request, self.template_name, {'game': game})
 
 
 # =========================CART=========================
