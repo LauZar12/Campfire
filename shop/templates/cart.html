@@ -3,12 +3,25 @@
 {% block content %}
 
 <h1>Your Shopping Cart</h1>
-<ul>
+
+<form action="{% url 'cart' %}" method="post">
+
+  {% csrf_token %}
+
   {% for item in cart_items %}
-  <li>{{ item.game.title }} - Quantity: {{ item.quantity }}</li>
+
+  <input type="hidden" name="game_id" value="{{ item.game.id }}">
+  {{ item.game.title }} - Quantity: {{ item.quantity }}
+  <br>
+
   {% empty %}
-  <li>Your cart is empty.</li>
+  <h1>Your cart is empty.</h1>
   {% endfor %}
-</ul>
+
+  <button type="submit">
+    <h1>BUY</h1>
+  </button>
+
+</form>
 
 {% endblock %}

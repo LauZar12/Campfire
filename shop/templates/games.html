@@ -16,7 +16,7 @@
     </button>
   </form>
 
-  <form action="{% url 'cart' %}" method="post">
+  <form action="{% url 'games' %}" method="post">
     {% csrf_token %}
     <input type="hidden" name="game_id" value="{{ game.id }}">
     <button type="submit">

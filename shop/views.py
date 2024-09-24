@@ -5,7 +5,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import login
 from .forms import SignUpForm
 from django.urls import reverse_lazy
-from .models import Game, ShoppingCart, CartItem
+from .models import Game, ShoppingCart, CartItem, GameOwner
 
 
 # =========================HOME=========================
@@ -48,6 +48,16 @@ class Games(LoginRequiredMixin, View):
                       'games': games,
                       })
 
+    def post(self, request):
+        game_id = request.POST.get('game_id')
+        game = get_object_or_404(Game, id=game_id)
+        shopping_cart, created = ShoppingCart.objects.get_or_create(user=request.user)
+        cart_item, created = CartItem.objects.get_or_create(shopping_cart=shopping_cart, game=game)
+        if not created:
+            cart_item.quantity += 1
+            cart_item.save()
+        return redirect('games')
+
 
 # =========================GAME=========================
 class GameView(LoginRequiredMixin, View):
@@ -69,13 +79,17 @@ class Cart(LoginRequiredMixin, View):
         return render(request, self.template_name, {'cart_items': cart_items})
 
     def post(self, request):
-        game_id = request.POST.get('game_id')
-        game = get_object_or_404(Game, id=game_id)
+
+        games_id = request.POST.getlist('game_id')
+
         shopping_cart, created = ShoppingCart.objects.get_or_create(user=request.user)
-        cart_item, created = CartItem.objects.get_or_create(shopping_cart=shopping_cart, game=game)
-        if not created:
-            cart_item.quantity += 1
-            cart_item.save()
+
+        for game_id in games_id:
+            game = get_object_or_404(Game, id=game_id)
+            GameOwner.objects.create(user=request.user, game=game)
+
+        shopping_cart.cart_items.all().delete()
+
         return redirect('cart')
 
 
@@ -84,4 +98,5 @@ class Account(LoginRequiredMixin, View):
     template_name = "account.html"
 
     def get(self, request):
-        return render(request, self.template_name, {})
+        owned_games = GameOwner.objects.filter(user=request.user)
+        return render(request, self.template_name, {'owned_games': owned_games})

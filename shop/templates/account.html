@@ -2,9 +2,21 @@
 {% block title %}'Home Page - Online Store'{% endblock %}
 {% block content %}
 
+<form method="POST" action="{% url 'logout' %}">
+  {% csrf_token %}
+  <button type="submit">Logout</button>
+</form>
+
 <h1>
-  You are loged in
+  Your games
 </h1>
 
+<ul>
+  {% for item in owned_games %}
+  <li>{{ item.game.title }} by {{ item.game.author }}</li>
+  {% empty %}
+  <p>You don't own any games yet.</p>
+  {% endfor %}
+</ul>
 
 {% endblock %}
