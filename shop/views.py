@@ -5,7 +5,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import login
 from .forms import SignUpForm
 from django.urls import reverse_lazy
-from .models import Game, ShoppingCart, CartItem, GameOwner
+from .models import Game, ShoppingCart, CartItem, GameOwner, Review
 
 
 # =========================HOME=========================
@@ -29,7 +29,8 @@ class Logout(LogoutView):
 class Signup(CreateView):
     form_class = SignUpForm
     template_name = 'signup.html'
-    success_url = reverse_lazy('login')  # Redirect to login page after successful registration
+    # Redirect to login page after successful registration
+    success_url = reverse_lazy('login')
 
     def form_valid(self, form):
         # Log in the user immediately after registration
@@ -49,24 +50,66 @@ class Games(LoginRequiredMixin, View):
                       })
 
     def post(self, request):
-        game_id = request.POST.get('game_id')
-        game = get_object_or_404(Game, id=game_id)
-        shopping_cart, created = ShoppingCart.objects.get_or_create(user=request.user)
-        cart_item, created = CartItem.objects.get_or_create(shopping_cart=shopping_cart, game=game)
-        if not created:
-            cart_item.quantity += 1
-            cart_item.save()
-        return redirect('games')
+        if 'game_id' in request.POST:
+            game_id = request.POST.get('game_id')
+            game = get_object_or_404(Game, id=game_id)
+            shopping_cart, created = ShoppingCart.objects.get_or_create(
+                user=request.user)
+            cart_item, created = CartItem.objects.get_or_create(
+                shopping_cart=shopping_cart, game=game)
+            if not created:
+                cart_item.quantity += 1
+                cart_item.save()
+            return redirect('games')
+        elif 'search' in request.POST:
+            search_term = request.POST.get('search')
+            # Filter games based on the search term
+            games = Game.objects.filter(title__icontains=search_term)
+
+            return render(request, self.template_name, {
+                'games': games,
+            })
 
 
 # =========================GAME=========================
 class GameView(LoginRequiredMixin, View):
     template_name = "game.html"
 
+    def get(self, request):
+        game_id = request.GET.get('game_id')
+        game = get_object_or_404(Game, id=game_id)
+
+        reviews = Review.objects.filter(game=game)
+
+        categories = game.game_categories.all()
+        category_names = [category.category.name for category in categories]
+
+        return render(request, self.template_name, {
+            'game': game,
+            'reviews': reviews,
+            'categories': category_names,
+        })
+
     def post(self, request):
-        id = request.POST.get('game_id')
-        game = get_object_or_404(Game, id=id)
-        return render(request, self.template_name, {'game': game})
+        game_id = request.POST.get('game_id')
+        game = get_object_or_404(Game, id=game_id)
+
+        if 'comment' in request.POST:
+            comment = request.POST.get('comment')
+
+            Review.objects.create(
+                user=request.user, game=game, comment=comment)
+
+        reviews = Review.objects.filter(game=game)
+
+        categories = game.game_categories.all()
+        category_names = [category.category.name for category in categories]
+
+        return render(request, self.template_name, {
+            'game': game,
+            'reviews': reviews,
+            'categories': category_names,
+        })
 
 
 # =========================CART=========================
@@ -74,7 +117,8 @@ class Cart(LoginRequiredMixin, View):
     template_name = "cart.html"
 
     def get(self, request):
-        shopping_cart, created = ShoppingCart.objects.get_or_create(user=request.user)
+        shopping_cart, created = ShoppingCart.objects.get_or_create(
+            user=request.user)
         cart_items = shopping_cart.cart_items.all()
         return render(request, self.template_name, {'cart_items': cart_items})
 
@@ -82,11 +126,16 @@ class Cart(LoginRequiredMixin, View):
 
         games_id = request.POST.getlist('game_id')
 
-        shopping_cart, created = ShoppingCart.objects.get_or_create(user=request.user)
+        shopping_cart, created = ShoppingCart.objects.get_or_create(
+            user=request.user)
 
         for game_id in games_id:
             game = get_object_or_404(Game, id=game_id)
-            GameOwner.objects.create(user=request.user, game=game)
+
+            game_owner, created = GameOwner.objects.get_or_create(
+                game=game, user=request.user)
+            if created:
+                game_owner.save()
 
         shopping_cart.cart_items.all().delete()
 
@@ -99,4 +148,7 @@ class Account(LoginRequiredMixin, View):
 
     def get(self, request):
         owned_games = GameOwner.objects.filter(user=request.user)
-        return render(request, self.template_name, {'owned_games': owned_games})
+        return render(request, self.template_name, {
+                      'user': request.user,
+                      'owned_games': owned_games
+                      })
