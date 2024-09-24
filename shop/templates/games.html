@@ -2,6 +2,12 @@
 {% block title %}'Home Page - Online Store'{% endblock %}
 {% block content %}
 
-games
+<h1>List of Games</h1>
+<ul>
+  {% for game in games %}
+  <li>{{ game.title }} by {{ game.author }} - ${{ game.price }}</li>
+  <p>{{ game.description }}</p>
+  {% endfor %}
+</ul>
 
 {% endblock %}
