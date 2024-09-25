@@ -1,3 +1,6 @@
 *.pyc
 CampFire/__pycache__/*.pyc
+CampFire/__pycache__
 shop/__pycache__/*.pyc
+shop/__pycache__
+__pycache__/
