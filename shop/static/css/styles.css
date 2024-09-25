@@ -113,6 +113,29 @@ body {
     align-items: center;
 }
 
+.home-page {
+    background-image: url("/static/images/campfire_background.png");
+    background-size: 1100px;  
+    background-position: center top 0px;
+    background-repeat: no-repeat; 
+    min-height: 80vh; /* Ajusta esta propiedad para controlar la altura mínima de la sección */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.home-page-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 
 .login-container {
     background-color: rgba(0, 0, 0, 0.7); 
