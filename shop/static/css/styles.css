@@ -104,10 +104,10 @@ body {
 
 .login-page {
     background-image: url("/static/images/fondo.png");
-    background-size: cover; 
-    background-position: center; 
+    background-size: cover;  
+    background-position: center top 40px;
     background-repeat: no-repeat; 
-    min-height: 500vh; 
+    min-height: 80vh; 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -274,3 +274,52 @@ button[type="submit"]:hover {
     opacity: 0.8;
 }
 
+/* Estilos para la página de signup */
+.signup-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #3e1a5f; /* Color púrpura */
+}
+
+.signup-container {
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro semi-transparente */
+    padding: 40px;
+    border-radius: 10px;
+    color: #fff;
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+}
+
+.signup-container h2 {
+    margin-bottom: 20px;
+    color: #FFEB3B; /* Color amarillo */
+}
+
+.signup-container input[type="text"],
+.signup-container input[type="email"],
+.signup-container input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.signup-container button.signup-btn {
+    background-color: #FF6F00; /* Color naranja */
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.signup-container button.signup-btn:hover {
+    background-color: #FF8F00; /* Un poco más claro en hover */
+}
