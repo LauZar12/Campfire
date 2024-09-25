@@ -11,6 +11,7 @@
   <div class="games-container">
     <div class="games-grid">
       {% for item in cart_items %}
+      <input type="hidden" name="game_id" value="{{ item.game.id }}" />
       <div class="game-card">
         <div class="game-info">
           <h2>{{ item.game.title }}</h2>
