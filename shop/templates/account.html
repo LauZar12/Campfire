@@ -9,6 +9,11 @@
   Your games
 </h1>
 
+<!-- Button to sort owned games by name -->
+<form action="{% url 'account' %}" method="get">
+  <button type="submit" name="sort_by_name" value="1">Sort by Name</button>
+</form>
+
 <ul>
   {% for item in owned_games %}
   <li>{{ item.game.title }} by {{ item.game.author }}</li>

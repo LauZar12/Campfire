@@ -155,6 +155,10 @@ class Account(LoginRequiredMixin, View):
 
     def get(self, request):
         owned_games = GameOwner.objects.filter(user=request.user)
+
+        if 'sort_by_name' in request.GET:
+            owned_games = owned_games.select_related('game').order_by('game__title')
+
         return render(request, self.template_name, {
                       'user': request.user,
                       'owned_games': owned_games
