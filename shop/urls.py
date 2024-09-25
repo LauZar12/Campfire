@@ -1,3 +1,4 @@
+# Miguel Angel Cock Cano
 from django.urls import path
 from .views import Home, Login, Logout, Signup, Games, GameView, Cart, Account
 

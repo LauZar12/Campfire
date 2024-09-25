@@ -1,3 +1,4 @@
+# Miguel Angel Cock Cano
 """
 Django settings for CampFire project.
 
