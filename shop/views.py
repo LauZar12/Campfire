@@ -86,7 +86,10 @@ class GameView(LoginRequiredMixin, View):
         game_id = request.GET.get('game_id')
         game = get_object_or_404(Game, id=game_id)
 
-        reviews = Review.objects.filter(game=game)
+        if 'sort_by' in request.GET:
+            reviews = Review.objects.filter(game=game).order_by('-rating')
+        else:
+            reviews = Review.objects.filter(game=game)
 
         categories = game.game_categories.all()
         category_names = [category.category.name for category in categories]
@@ -101,11 +104,12 @@ class GameView(LoginRequiredMixin, View):
         game_id = request.POST.get('game_id')
         game = get_object_or_404(Game, id=game_id)
 
-        if 'comment' in request.POST:
+        if 'comment' in request.POST and 'rating' in request.POST:
             comment = request.POST.get('comment')
+            rating = request.POST.get('rating')
 
             Review.objects.create(
-                user=request.user, game=game, comment=comment)
+                user=request.user, game=game, comment=comment, rating=rating)
 
         reviews = Review.objects.filter(game=game)
 
@@ -157,7 +161,8 @@ class Account(LoginRequiredMixin, View):
         owned_games = GameOwner.objects.filter(user=request.user)
 
         if 'sort_by_name' in request.GET:
-            owned_games = owned_games.select_related('game').order_by('game__title')
+            owned_games = owned_games.select_related(
+                'game').order_by('game__title')
 
         return render(request, self.template_name, {
                       'user': request.user,

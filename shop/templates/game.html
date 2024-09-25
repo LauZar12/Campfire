@@ -2,49 +2,63 @@
 {% block content %}
 <div class="container">
 
-    <h1>{{ game.title }}</h1>
-    <p>Author: {{ game.author }}</p>
-    <p>Price: ${{ game.price }}</p>
-    <p>Description: {{ game.description }}</p>
+  <h1>{{ game.title }}</h1>
+  <p>Author: {{ game.author }}</p>
+  <p>Price: ${{ game.price }}</p>
+  <p>Description: {{ game.description }}</p>
 
-    <p>Categories:</p>
-    <ul>
-      {% for category in categories %}
-      <li>{{ category }}</li>
-      {% empty %}
-      <li>No categories available.</li>
-      {% endfor %}
-    </ul>
+  <p>Categories:</p>
+  <ul>
+    {% for category in categories %}
+    <li>{{ category }}</li>
+    {% empty %}
+    <li>No categories available.</li>
+    {% endfor %}
+  </ul>
 
-    <div class="game-card">
+  <div class="game-card">
+    <div class="game-info">
+      <form action="{% url 'game' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="game_id" value="{{ game.id }}" />
+        <input type="text" name="comment" placeholder="Add a comment" class="form-control comment-input" />
+
+        <label for="rating">Rating:</label>
+        <select name="rating" id="rating">
+          <option value="1">1 - Poor</option>
+          <option value="2">2 - Fair</option>
+          <option value="3">3 - Good</option>
+          <option value="4">4 - Very Good</option>
+          <option value="5">5 - Excellent</option>
+        </select>
+
+        <button type="submit" class="btn see-btn">Comment game</button>
+      </form>
+    </div>
+  </div>
+
+
+  <form action="{% url 'game' %}" method="get">
+    <input type="hidden" name="game_id" value="{{ game.id }}">
+
+    <button type="submit" name="sort_by" value="rating">
+      Sort by Rating
+    </button>
+  </form>
+
+  <div style="display: flex; flex-wrap: wrap; align-items: center;">
+    <h2>Reviews: </h2>
+    {% for review in reviews %}
+    <div class="game-card" style="margin-right: 10px;">
       <div class="game-info">
-        <form action="{% url 'game' %}" method="post">
-          {% csrf_token %}
-          <input type="hidden" name="game_id" value="{{ game.id }}" />
-          <input
-            type="text"
-            name="comment"
-            placeholder="Add a comment"
-            class="form-control comment-input"
-          />
-          <button type="submit" class="btn see-btn">Comment game</button>
-        </form>
+        <p><strong>{{ review.user.username }}</strong> rated this game {{ review.rating }}/5</p>
+        <p>{{ review.comment }}</p>
       </div>
     </div>
-
-    <div style="display: flex; flex-wrap: wrap; align-items: center;">
-      <h2>Reviews: </h2>
-      {% for review in reviews %}
-      <div class="game-card" style="margin-right: 10px;">
-        <div class="game-info">
-          <strong>{{ review.user.username }}:</strong>
-          <p>{{ review.comment }}</p>
-        </div>
-      </div>
-      {% empty %}
-      <p>No reviews yet for this game.</p>
-      {% endfor %}
-    </div>
+    {% empty %}
+    <p>No reviews yet for this game.</p>
+    {% endfor %}
+  </div>
 
   {% endblock %}
 </div>
