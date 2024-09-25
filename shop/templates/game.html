@@ -1,39 +1,50 @@
-{% extends 'base.html' %}
-{% block title %}'Home Page - Online Store'{% endblock %}
+{% extends 'base.html' %} {% block title %}Home Page - Online Store{% endblock%}
 {% block content %}
+<div class="container">
 
-<h1>{{ game.title }}</h1>
-<p>Author: {{ game.author }}</p>
-<p>Price: ${{ game.price }}</p>
-<p>Description: {{ game.description }}</p>
+    <h1>{{ game.title }}</h1>
+    <p>Author: {{ game.author }}</p>
+    <p>Price: ${{ game.price }}</p>
+    <p>Description: {{ game.description }}</p>
 
-<p>Categories:</p>
-<ul>
-  {% for category in categories %}
-  <li>{{ category }}</li>
-  {% empty %}
-  <li>No categories available.</li>
-  {% endfor %}
-</ul>
+    <p>Categories:</p>
+    <ul>
+      {% for category in categories %}
+      <li>{{ category }}</li>
+      {% empty %}
+      <li>No categories available.</li>
+      {% endfor %}
+    </ul>
 
-<form action="{% url 'game' %}" method="post">
-  {% csrf_token %}
-  <input type="hidden" name="game_id" value="{{ game.id }}">
-  <input type="text" name="comment">
-  <button type="submit">
-    <h1>See</h1>
-  </button>
-</form>
+    <div class="game-card">
+      <div class="game-info">
+        <form action="{% url 'game' %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="game_id" value="{{ game.id }}" />
+          <input
+            type="text"
+            name="comment"
+            placeholder="Add a comment"
+            class="form-control comment-input"
+          />
+          <button type="submit" class="btn see-btn">Comment game</button>
+        </form>
+      </div>
+    </div>
 
-<h2>Reviews</h2>
-<ul>
-  {% for review in reviews %}
-  <li>
-    <strong>{{ review.user.username }}:</strong> {{ review.comment }}
-  </li>
-  {% empty %}
-  <p>No reviews yet for this game.</p>
-  {% endfor %}
-</ul>
+    <div style="display: flex; flex-wrap: wrap; align-items: center;">
+      <h2>Reviews: </h2>
+      {% for review in reviews %}
+      <div class="game-card" style="margin-right: 10px;">
+        <div class="game-info">
+          <strong>{{ review.user.username }}:</strong>
+          <p>{{ review.comment }}</p>
+        </div>
+      </div>
+      {% empty %}
+      <p>No reviews yet for this game.</p>
+      {% endfor %}
+    </div>
 
-{% endblock %}
+  {% endblock %}
+</div>

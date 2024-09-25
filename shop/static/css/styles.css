@@ -346,3 +346,35 @@ button[type="submit"]:hover {
 .signup-container button.signup-btn:hover {
     background-color: #FF8F00; /* Un poco más claro en hover */
 }
+
+.game-card {
+    margin: 20px 0;
+    padding: 15px;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    background-color: #FF8F00;
+  }
+  
+  .game-info {
+    margin-bottom: 10px;
+  }
+  
+  .comment-input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    box-sizing: border-box;
+  }
+  
+  .btn.see-btn {
+    margin-top: 10px;
+  }
+
+  .centered-content {
+    display: flex;
+    justify-content: center; /* Centra el contenido horizontalmente */
+    align-items: center; /* Centra el contenido verticalmente */
+    text-align: center; /* Asegura que el texto también esté centrado */
+    width: 50%; /* Ocupa todo el ancho disponible */
+    max-width: 50%; /* Limita el ancho máximo a la mitad del contenedor, ajusta según necesites */
+  }
