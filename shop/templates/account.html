@@ -1,25 +1,53 @@
 {% extends 'base.html' %}
-{% block title %}'Home Page - Online Store'{% endblock %}
+{% block title %}Home Page - Online Store{% endblock %}
 {% block content %}
 
-<h2>Welcome, {{ user.username }}!</h2>
-<p>Email: {{ user.email }}</p>
+<div class="container">
+  <h2>Welcome, {{ user.username }}!</h2>
+  <p>Email: {{ user.email }}</p>
 
-<h1>
-  Your games
-</h1>
+  <div class="games-container">
+    <div class="games-grid">
+      {% for game in games %}
+      <div class="game-card">
+        <div class="game-info">
+          <h2>{{ game.title }}</h2>
+          <p>By {{ game.author }} - ${{ game.price }}</p>
+          <p>{{ game.description }}</p>
+        </div>
+        <div class="game-buttons">
+          <form action="{% url 'game' %}" method="get">
+            <input type="hidden" name="game_id" value="{{ game.id }}">
+            <button type="submit" class="btn see-btn">See</button>
+          </form>
+          <form action="{% url 'games' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="game_id" value="{{ game.id }}">
+            <button type="submit" class="btn buy-btn">Buy</button>
+          </form>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
 
-<!-- Button to sort owned games by name -->
-<form action="{% url 'account' %}" method="get">
-  <button type="submit" name="sort_by_name" value="1">Sort by Name</button>
-</form>
+  <h1>Your games:</h1>
+  <form action="{% url 'account' %}" method="get">
+    <button type="submit" name="sort_by_name" value="1">Sort by Name</button>
+  </form>
 
-<ul>
-  {% for item in owned_games %}
-  <li>{{ item.game.title }} by {{ item.game.author }}</li>
-  {% empty %}
-  <p>You don't own any games yet.</p>
-  {% endfor %}
-</ul>
+  <div class="games-grid">
+    {% for item in owned_games %}
+    <div class="game-card">
+      <div class="game-info">
+        <h2>{{ item.game.title }}</h2>
+        <p>By {{ item.game.author }}</p>
+      </div>
+    </div>
+    {% empty %}
+    <p>You don't own any games yet.</p>
+    {% endfor %}
+  </div>
+</div>
 
 {% endblock %}
