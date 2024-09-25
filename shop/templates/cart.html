@@ -1,27 +1,30 @@
 {% extends 'base.html' %}
-{% block title %}'Home Page - Online Store'{% endblock %}
+{% block title %}Home Page - Online Store{% endblock %}
 {% block content %}
 
 <h1>Your Shopping Cart</h1>
 
+{% if cart_items %}
 <form action="{% url 'cart' %}" method="post">
-
   {% csrf_token %}
+  <div class="games-container">
+    <div class="games-grid">
+      {% for item in cart_items %}
+      <div class="game-card">
+        <div class="game-info">
+          <h2>{{ item.game.title }}</h2>
+          <p>Quantity: {{ item.quantity }}</p>
+          <p>$ {{ item.game.price }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
 
-  {% for item in cart_items %}
-
-  <input type="hidden" name="game_id" value="{{ item.game.id }}">
-  {{ item.game.title }} - Quantity: {{ item.quantity }}
-  <br>
-
-  {% empty %}
-  <h1>Your cart is empty.</h1>
-  {% endfor %}
-
-  <button type="submit">
-    <h1>BUY</h1>
-  </button>
-
+  </div>
+  <button type="submit" class="btn buy-btn">Buy Now</button>
 </form>
+{% else %}
+<h2>Your cart is empty.</h2>
+{% endif %}
 
 {% endblock %}
