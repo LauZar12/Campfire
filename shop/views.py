@@ -44,10 +44,18 @@ class Games(LoginRequiredMixin, View):
     template_name = "games.html"
 
     def get(self, request):
-        games = Game.objects.all()
+        sort_by_price = request.GET.get('sort_by_price', None)
+
+        if sort_by_price == 'asc':
+            games = Game.objects.all().order_by('price')  # Sort ascending
+        elif sort_by_price == 'desc':
+            games = Game.objects.all().order_by('-price')  # Sort descending
+        else:
+            games = Game.objects.all()
+
         return render(request, self.template_name, {
-                      'games': games,
-                      })
+            'games': games,
+        })
 
     def post(self, request):
         if 'game_id' in request.POST:
@@ -63,7 +71,6 @@ class Games(LoginRequiredMixin, View):
             return redirect('games')
         elif 'search' in request.POST:
             search_term = request.POST.get('search')
-            # Filter games based on the search term
             games = Game.objects.filter(title__icontains=search_term)
 
             return render(request, self.template_name, {
