@@ -85,3 +85,10 @@ class Review(models.Model):
 
     def __str__(self):
         return f"REVIEW: {self.user.username} {self.game.title}"
+
+
+# ========== Card ==========
+class Wallet(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='wallet')
+    balance = models.IntegerField(default=0)

@@ -1,0 +1,9 @@
+==========RUN==========
+python manage.py runserver
+
+==========MIGRATIONS==========
+python manage.py makemigrations
+python manage.py migrate
+
+==========TESTS==========
+python manage.py test

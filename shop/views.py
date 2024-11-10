@@ -6,7 +6,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import login
 from .forms import SignUpForm
 from django.urls import reverse_lazy
-from .models import Game, ShoppingCart, CartItem, GameOwner, Review
+from .models import Game, ShoppingCart, CartItem, GameOwner, Review, Wallet
 
 
 # =========================HOME=========================
@@ -160,6 +160,7 @@ class Account(LoginRequiredMixin, View):
 
     def get(self, request):
         owned_games = GameOwner.objects.filter(user=request.user)
+        wallet, created = Wallet.objects.get_or_create(user=request.user)
 
         if 'sort_by_name' in request.GET:
             owned_games = owned_games.select_related(
@@ -167,5 +168,14 @@ class Account(LoginRequiredMixin, View):
 
         return render(request, self.template_name, {
                       'user': request.user,
-                      'owned_games': owned_games
+                      'owned_games': owned_games,
+                      "wallet": wallet,
                       })
+    
+    def post(self, request):
+        balance = int(request.POST.get('balance', 0))
+        wallet = Wallet.objects.get(user=request.user)
+        wallet.balance += balance
+        wallet.save()
+
+        return redirect('account')
