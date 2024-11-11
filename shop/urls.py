@@ -1,6 +1,6 @@
 # Miguel Angel Cock Cano
 from django.urls import path
-from .views import Home, Login, Logout, Signup, Games, GameView, Cart, Account
+from .views import Home, Login, Logout, Signup, Games, GameView, Cart, Account, GamesRest
 
 urlpatterns = [
     path('', Home.as_view(), name='home'),
@@ -11,4 +11,6 @@ urlpatterns = [
     path('game/', GameView.as_view(), name='game'),
     path('cart/', Cart.as_view(), name='cart'),
     path('account/', Account.as_view(), name='account'),
+
+    path('gamesAPI/', GamesRest.as_view(), name='')
 ]

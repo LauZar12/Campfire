@@ -8,6 +8,12 @@ from .forms import SignUpForm
 from django.urls import reverse_lazy
 from .models import Game, ShoppingCart, CartItem, GameOwner, Review, Wallet, Receipt
 
+# REST
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import status
+from .serializers import GamesSerializer
+
 
 # =========================HOME=========================
 class Home(View):
@@ -193,3 +199,11 @@ class Account(LoginRequiredMixin, View):
         wallet.save()
 
         return redirect('account')
+
+
+# =========================ACCOUNT=========================
+class GamesRest(APIView):
+    def get(self, request):
+        books = Game.objects.all()
+        serializer = GamesSerializer(books, many=True)
+        return Response(serializer.data)
