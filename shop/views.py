@@ -7,6 +7,7 @@ from django.contrib.auth import login
 from .forms import SignUpForm
 from django.urls import reverse_lazy
 from .models import Game, ShoppingCart, CartItem, GameOwner, Review, Wallet
+from django.contrib.auth.models import User
 
 
 # =========================HOME=========================
@@ -142,14 +143,20 @@ class Cart(LoginRequiredMixin, View):
             user=request.user)
 
         for game_id in games_id:
+
             game = get_object_or_404(Game, id=game_id)
 
-            game_owner, created = GameOwner.objects.get_or_create(
-                game=game, user=request.user)
-            if created:
-                game_owner.save()
+            wallet, create = Wallet.objects.get_or_create(user=request.user)
 
-        shopping_cart.cart_items.all().delete()
+            if wallet.balance - game.price >= 0: 
+                game_owner, created = GameOwner.objects.get_or_create(
+                    game=game, user=request.user)
+                if created:
+                    game_owner.save()
+                wallet.balance -= game.price
+                wallet.save()
+
+                shopping_cart.cart_items.get(game=game).delete()
 
         return redirect('cart')
 
