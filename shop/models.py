@@ -1,6 +1,10 @@
 # Miguel Angel Cock Cano
 from django.db import models
 from django.contrib.auth.models import User
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
+from django.conf import settings
+import os
 
 
 # ========== GAME ==========
@@ -87,8 +91,43 @@ class Review(models.Model):
         return f"REVIEW: {self.user.username} {self.game.title}"
 
 
-# ========== Card ==========
+# ========== Wallet ==========
 class Wallet(models.Model):
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='wallet')
+        User, on_delete=models.CASCADE, related_name='user_wallet')
     balance = models.IntegerField(default=0)
+
+
+class Receipt(models.Model):
+    wallet = models.ForeignKey(
+        Wallet, on_delete=models.CASCADE, related_name='wallet_receipts')
+    
+    def generate_receipt(self, games: list[Game]):
+        # Define file path
+        file_path = os.path.join(settings.MEDIA_ROOT, f'receipts/receipt_{self.wallet.user.username}{self.id}.pdf')
+    
+        # Ensure the directory exists
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+
+        c = canvas.Canvas(file_path, pagesize=A4)
+        
+        # Receipt content (example)
+        c.drawString(100, 800, f"Receipt for Order #{self.wallet.user.username}")
+        c.drawString(100, 780, "--------------------------------")
+        c.drawString(100, 760, "Item Name        Price")
+        
+        y_position = 740
+        total_price = 0
+        
+        # List items
+        for game in games:
+            c.drawString(100, y_position, f"{game.title}          ${game.price}")
+            total_price += game.price
+            y_position -= 20
+
+        # Add total price
+        c.drawString(100, y_position - 20, "--------------------------------")
+        c.drawString(100, y_position - 40, f"Total: ${total_price:.2f}")
+        
+        # Save the PDF
+        c.save() 
