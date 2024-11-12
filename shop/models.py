@@ -99,12 +99,12 @@ class Wallet(models.Model):
 
 
 class Receipt(models.Model):
-    wallet = models.ForeignKey(
-        Wallet, on_delete=models.CASCADE, related_name='wallet_receipts')
-    
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='user_receipt')
+
     def generate_receipt(self, games: list[Game]):
         # Define file path
-        file_path = os.path.join(settings.MEDIA_ROOT, f'receipts/receipt_{self.wallet.user.username}{self.id}.pdf')
+        file_path = os.path.join(settings.MEDIA_ROOT, f'receipts/receipt_{self.user.username}{self.id}.pdf')
     
         # Ensure the directory exists
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
@@ -112,7 +112,7 @@ class Receipt(models.Model):
         c = canvas.Canvas(file_path, pagesize=A4)
         
         # Receipt content (example)
-        c.drawString(100, 800, f"Receipt for Order #{self.wallet.user.username}")
+        c.drawString(100, 800, f"Receipt for Order #{self.user.username}")
         c.drawString(100, 780, "--------------------------------")
         c.drawString(100, 760, "Item Name        Price")
         

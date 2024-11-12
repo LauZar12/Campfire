@@ -167,7 +167,7 @@ class Cart(LoginRequiredMixin, View):
 
                 shopping_cart.cart_items.get(game=game).delete()
         
-        receipt = Receipt.objects.create(wallet=wallet)
+        receipt = Receipt.objects.create(user=request.user)
         receipt.save()
         receipt.generate_receipt(games)
 
