@@ -201,7 +201,7 @@ class Account(LoginRequiredMixin, View):
         return redirect('account')
 
 
-# =========================ACCOUNT=========================
+# =========================REST=========================
 class GamesRest(APIView):
     def get(self, request):
         books = Game.objects.all()
