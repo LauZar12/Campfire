@@ -11,19 +11,21 @@
 <div class="search-container">
   <form action="{% url 'games' %}" method="post">
     {% csrf_token %}
-    <input type="text" name="search" class="search-input" placeholder="{% trans 'Search for a game...' %}">
-    <button type="submit" class="search-btn">
-      {% trans "Search" %}
-    </button>
+    <input type="text" name="search" class="search-input" placeholder="Search for a game...">
+    <p></p>
+    <button type="submit" class="search-btn">Search</button>
   </form>
 </div>
 
 <!-- Sorting Buttons -->
-<form method="get" action="{% url 'games' %}">
-  <button type="submit" name="sort_by_price" value="asc">{% trans "Sort by Price (Low to High)" %}</button>
-  <p><p/>
-  <button type="submit" name="sort_by_price" value="desc">{% trans "Sort by Price (High to Low)" %}</button>
-</form>
+<div class="sorting-buttons">
+  <form method="get" action="{% url 'games' %}">
+    <button type="submit" name="sort_by_price" value="asc">Sort by Price (Low to High)</button>
+    <p></p>
+    <button type="submit" name="sort_by_price" value="desc">Sort by Price (High to Low)</button>
+  </form>
+</div>
+
 
 <!-- Contenedor de los juegos -->
 <div class="games-container">
@@ -46,7 +48,7 @@
         <form action="{% url 'games' %}" method="post">
           {% csrf_token %}
           <input type="hidden" name="game_id" value="{{ game.id }}">
-          <button type="submit" class="btn see-btn">{% trans "Buy" %}</button>
+          <button type="submit" class="btn see-btn">Buy</button>
         </form>
       </div>
     </div>

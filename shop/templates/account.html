@@ -5,21 +5,22 @@
 {% block content %}
 
 <div class="container">
-  <h2>{% blocktrans %}Welcome, {{ user.username }}!{% endblocktrans %}</h2>
-  <p>{% trans "Email:" %} {{ user.email }}</p>
-  <p>{% trans "Balance:" %} {{ wallet.balance }}</p>
+  <div class="container1">
+    <h2>Welcome, {{ user.username }}!</h2>
+    <p>Email: {{ user.email }}</p>
+    <p>Balance: {{ wallet.balance }}</p>
+    <form action="{% url 'account' %}" method="post">
+      {% csrf_token %}
+      <input type="number" min="1" name="balance">
+      <p></p>
+      <button type="submit2">Add money</button>
+    </form>
 
-  <form action="{% url 'account' %}" method="post">
-    {% csrf_token %}
-    <input type="number" min="1" name="balance">
-    <button type="submit">{% trans "Add money" %}</button>
-  </form>
-
-  <h1>{% trans "Your games:" %}</h1>
-  <form action="{% url 'account' %}" method="get">
-    <button type="submit" name="sort_by_name" value="1">{% trans "Sort by Name" %}</button>
-  </form>
-
+    <h1>Your games:</h1>
+    <form action="{% url 'account' %}" method="get">
+      <button type="submit2" name="sort_by_name" value="1">Sort by Name</button>
+    </form>
+  </div>
   <div class="games-grid">
     {% for item in owned_games %}
     <div class="game-card">
@@ -35,4 +36,3 @@
 </div>
 
 {% endblock %}
-

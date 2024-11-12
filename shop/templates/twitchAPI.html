@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Home Page - Online Store{% endblock %}
+{% block content %}
+
+<h1>Lista de Juegos Populares en Twitch</h1>
+<ul>
+    {% for juego in juegos %}
+        <li>
+            <p>Nombre: {{ juego['name'] }}</p>
+            <p>ID: {{ juego['id'] }}</p>
+            <img src="{{ juego['box_art_url'] | replace('{width}', '200') | replace('{height}', '250') }}" alt="Carátula de {{ juego['name'] }}">
+        </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
