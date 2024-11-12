@@ -401,7 +401,7 @@ button[type="submit"]:hover {
     max-width: 50%; /* Limita el ancho máximo a la mitad del contenedor, ajusta según necesites */
   }
 
-  button[type="submit1"] {
+button[type="submit1"] {
     width: 50%;
     padding: 10px;
     margin-left: 310px;
@@ -416,4 +416,28 @@ button[type="submit"]:hover {
 
 button[type="submit1"]:hover {
     background-color: #000; 
+}
+
+button[type="submit2"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #000; 
+    border: white;
+    border-radius: 10px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit2"]:hover {
+    background-color: #000; 
+}
+
+.container1 {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
 }
