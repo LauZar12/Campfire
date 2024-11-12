@@ -1,9 +1,10 @@
 <!-- Laura Danniela Zarate Guerrero -->
 {% extends 'base.html' %}
-{% block title %}Home Page - Online Store{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Home Page - Online Store" %}{% endblock %}
 {% block content %}
 
-<h1>Your Shopping Cart</h1>
+<h1>{% trans "Your Shopping Cart" %}</h1>
 
 {% if cart_items %}
 <form action="{% url 'cart' %}" method="post">
@@ -15,18 +16,17 @@
       <div class="game-card">
         <div class="game-info">
           <h2>{{ item.game.title }}</h2>
-          <p>Quantity: {{ item.quantity }}</p>
+          <p>{% blocktrans %}Quantity: {{ item.quantity }}{% endblocktrans %}</p>
           <p>$ {{ item.game.price }}</p>
         </div>
       </div>
       {% endfor %}
     </div>
-
   </div>
-  <button type="submit" class="btn buy-btn">Buy Now</button>
+  <button type="submit" class="btn buy-btn">{% trans "Buy Now" %}</button>
 </form>
 {% else %}
-<h2>Your cart is empty.</h2>
+<h2>{% trans "Your cart is empty." %}</h2>
 {% endif %}
 
 {% endblock %}

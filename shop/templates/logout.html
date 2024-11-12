@@ -1,8 +1,11 @@
 <!-- Moises Arrieta -->
 {% extends 'base.html' %}
-{% block title %}'Home Page - Online Store'{% endblock %}
+{% load i18n %}  
+
+{% block title %}
+    {% trans "Home Page - Online Store" %} 
+{% endblock %}
+
 {% block content %}
-
-LOGOUT
-
+    <h1>{% trans "LOGOUT" %}</h1>  
 {% endblock %}

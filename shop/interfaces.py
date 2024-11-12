@@ -1,7 +1,5 @@
 from abc import ABC, abstractmethod
 from django.contrib.auth.models import User
-from .models import Game
-
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 from django.conf import settings
@@ -9,40 +7,37 @@ import os
 
 class ReceiptGenerator(ABC):
     @abstractmethod
-    def generate_receipt(user: User, games: list[Game], id: int) -> str:
+    def generate_receipt(self, user: User, games: list, id: int) -> str:
+        """Generate a receipt in some format"""
         pass
 
-
 class PDFReceiptGenerator(ReceiptGenerator):
-    def generate_receipt(user: User, games: list[Game], id: int) -> str:
+    def generate_receipt(self, user: User, games: list, id: int) -> str:
+        from .models import Game  # Local import to avoid circular dependency
         file_path = os.path.join(settings.MEDIA_ROOT, f'receipts/receipt_{user.username}{id}.pdf')
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
         
         c = canvas.Canvas(file_path, pagesize=A4)
-        c.drawString(100, 800, f"Receipt for Order #{user.username}{id}")
-        c.drawString(100, 780, "--------------------------------")
-        c.drawString(100, 760, "Item Name        Price")
+        self._draw_header(c, user, id)
         
         y_position = 740
         total_price = 0
-        
         for game in games:
-            c.drawString(100, y_position, f"{game.title}          ${game.price}")
+            self._draw_game_details(c, game, y_position)
             total_price += game.price
             y_position -= 20
 
-        c.drawString(100, y_position - 20, "--------------------------------")
-        c.drawString(100, y_position - 40, f"Total: ${total_price:.2f}")
-        
+        self._draw_footer(c, total_price, y_position)
         c.save()
         return file_path
 
 class TextReceiptGenerator(ReceiptGenerator):
-    def generate_receipt(user: User, games: list[Game], id: int) -> str:
+    def generate_receipt(self, user: User, games: list, id: int) -> str:
+        from .models import Game  # Local import to avoid circular dependency
         file_path = os.path.join(settings.MEDIA_ROOT, f'receipts/receipt_{user.username}{id}.txt')
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
 
-        receipt_content = f"Receipt for Order #{user.username}{id}\n"
+        receipt_content = f"Receipt for Order #{id}\n"
         receipt_content += "--------------------------------\n"
         receipt_content += "Item Name        Price\n"
         
@@ -58,3 +53,5 @@ class TextReceiptGenerator(ReceiptGenerator):
             file.write(receipt_content)
 
         return file_path
+
+

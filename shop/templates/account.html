@@ -1,22 +1,23 @@
 <!-- Laura Danniela Zarate Guerrero y Moises Arrieta -->
 {% extends 'base.html' %}
-{% block title %}Home Page - Online Store{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Home Page - Online Store" %}{% endblock %}
 {% block content %}
 
 <div class="container">
-  <h2>Welcome, {{ user.username }}!</h2>
-  <p>Email: {{ user.email }}</p>
-  <p>Balance: {{ wallet.balance }}</p>
+  <h2>{% blocktrans %}Welcome, {{ user.username }}!{% endblocktrans %}</h2>
+  <p>{% trans "Email:" %} {{ user.email }}</p>
+  <p>{% trans "Balance:" %} {{ wallet.balance }}</p>
 
   <form action="{% url 'account' %}" method="post">
     {% csrf_token %}
     <input type="number" min="1" name="balance">
-    <button type="submit">Add money</button>
+    <button type="submit">{% trans "Add money" %}</button>
   </form>
 
-  <h1>Your games:</h1>
+  <h1>{% trans "Your games:" %}</h1>
   <form action="{% url 'account' %}" method="get">
-    <button type="submit" name="sort_by_name" value="1">Sort by Name</button>
+    <button type="submit" name="sort_by_name" value="1">{% trans "Sort by Name" %}</button>
   </form>
 
   <div class="games-grid">
@@ -24,13 +25,14 @@
     <div class="game-card">
       <div class="game-info">
         <h2>{{ item.game.title }}</h2>
-        <p>By {{ item.game.author }}</p>
+        <p>{% blocktrans %}By {{ item.game.author }}{% endblocktrans %}</p>
       </div>
     </div>
     {% empty %}
-    <p>You don't own any games yet.</p>
+    <p>{% trans "You don't own any games yet." %}</p>
     {% endfor %}
   </div>
 </div>
 
 {% endblock %}
+

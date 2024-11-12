@@ -1,17 +1,19 @@
 <!-- Laura Danniela Zarate Guerrero -->
-{% extends 'base.html' %} {% block title %}Home Page - Online Store{% endblock%}
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Home Page - Online Store" %}{% endblock %}
 {% block content %}
     <h1>{{ game.title }}</h1>
-    <p>Author: {{ game.author }}</p>
-    <p>Price: ${{ game.price }}</p>
-    <p>Description: {{ game.description }}</p>
+    <p>{% trans "Author:" %} {{ game.author }}</p>
+    <p>{% trans "Price:" %} ${{ game.price }}</p>
+    <p>{% trans "Description:" %} {{ game.description }}</p>
 
-    <p>Categories:</p>
+    <p>{% trans "Categories:" %}</p>
     <ul>
         {% for category in categories %}
         <li>{{ category }}</li>
         {% empty %}
-        <li>No categories available.</li>
+        <li>{% trans "No categories available." %}</li>
         {% endfor %}
     </ul>
 
@@ -20,44 +22,43 @@
             <form action="{% url 'game' %}" method="post">
                 {% csrf_token %}
                 <input type="hidden" name="game_id" value="{{ game.id }}" />
-                <input type="text" name="comment" placeholder="Add a comment" class="form-control comment-input" />
+                <input type="text" name="comment" placeholder="{% trans 'Add a comment' %}" class="form-control comment-input" />
 
-                <label for="rating">Rating:</label>
+                <label for="rating">{% trans "Rating:" %}</label>
                 <select name="rating" id="rating">
-          <option value="1">1 - Poor</option>
-          <option value="2">2 - Fair</option>
-          <option value="3">3 - Good</option>
-          <option value="4">4 - Very Good</option>
-          <option value="5">5 - Excellent</option>
-        </select>
+                    <option value="1">{% trans "1 - Poor" %}</option>
+                    <option value="2">{% trans "2 - Fair" %}</option>
+                    <option value="3">{% trans "3 - Good" %}</option>
+                    <option value="4">{% trans "4 - Very Good" %}</option>
+                    <option value="5">{% trans "5 - Excellent" %}</option>
+                </select>
 
-                <button type="submit" class="btn see-btn">Comment game</button>
+                <button type="submit" class="btn see-btn">{% trans "Comment game" %}</button>
             </form>
         </div>
     </div>
-
 
     <form action="{% url 'game' %}" method="get">
         <input type="hidden" name="game_id" value="{{ game.id }}">
 
         <button type="submit" name="sort_by" value="rating">
-      Sort by Rating
-    </button>
+            {% trans "Sort by Rating" %}
+        </button>
     </form>
 
     <div style="display: flex; flex-wrap: wrap; align-items: center;">
-        <h2>Reviews: </h2>
+        <h2>{% trans "Reviews:" %}</h2>
         {% for review in reviews %}
         <div class="game-card" style="margin-right: 10px;">
             <div class="game-info">
-                <p><strong>{{ review.user.username }}</strong> rated this game {{ review.rating }}/5</p>
+                <p><strong>{{ review.user.username }}</strong> {% trans "rated this game" %} {{ review.rating }}/5</p>
                 <p>{{ review.comment }}</p>
             </div>
         </div>
         {% empty %}
-        <p>No reviews yet for this game.</p>
+        <p>{% trans "No reviews yet for this game." %}</p>
         {% endfor %}
     </div>
 
-    {% endblock %}
+{% endblock %}
 </div>

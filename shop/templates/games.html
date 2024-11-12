@@ -1,27 +1,28 @@
 <!-- Laura Danniela Zarate Guerrero y Moises Arrieta -->
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}Home Page - Online Store{% endblock %}
+{% block title %}{% trans "Home Page - Online Store" %}{% endblock %}
 
 {% block content %}
-<h1>List of Games</h1>
+<h1>{% trans "List of Games" %}</h1>
 
 <!-- Formulario de búsqueda -->
 <div class="search-container">
   <form action="{% url 'games' %}" method="post">
     {% csrf_token %}
-    <input type="text" name="search" class="search-input" placeholder="Search for a game...">
+    <input type="text" name="search" class="search-input" placeholder="{% trans 'Search for a game...' %}">
     <button type="submit" class="search-btn">
-      Search
+      {% trans "Search" %}
     </button>
   </form>
 </div>
 
 <!-- Sorting Buttons -->
 <form method="get" action="{% url 'games' %}">
-  <button type="submit" name="sort_by_price" value="asc">Sort by Price (Low to High)</button>
+  <button type="submit" name="sort_by_price" value="asc">{% trans "Sort by Price (Low to High)" %}</button>
   <p><p/>
-  <button type="submit" name="sort_by_price" value="desc">Sort by Price (High to Low)</button>
+  <button type="submit" name="sort_by_price" value="desc">{% trans "Sort by Price (High to Low)" %}</button>
 </form>
 
 <!-- Contenedor de los juegos -->
@@ -31,21 +32,21 @@
     <div class="game-card">
       <div class="game-info">
         <h2>{{ game.title }}</h2>
-        <p>By {{ game.author }} - ${{ game.price }}</p>
+        <p>{% blocktrans %}By {{ game.author }} - ${{ game.price }}{% endblocktrans %}</p>
         <p>{{ game.description }}</p>
       </div>
       <div class="game-buttons">
         <!-- Botón de ver juego -->
         <form action="{% url 'game' %}" method="get">
           <input type="hidden" name="game_id" value="{{ game.id }}">
-          <button type="submit" class="btn see-btn">See</button>
+          <button type="submit" class="btn see-btn">{% trans "See" %}</button>
         </form>
 
         <!-- Botón de comprar juego -->
         <form action="{% url 'games' %}" method="post">
           {% csrf_token %}
           <input type="hidden" name="game_id" value="{{ game.id }}">
-          <button type="submit" class="btn buy-btn">Buy</button>
+          <button type="submit" class="btn buy-btn">{% trans "Buy" %}</button>
         </form>
       </div>
     </div>
