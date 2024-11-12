@@ -1,0 +1,4 @@
+reportlab
+djangorestframework
+Faker
+twitchAPI

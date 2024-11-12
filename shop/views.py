@@ -6,7 +6,18 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import login
 from .forms import SignUpForm
 from django.urls import reverse_lazy
-from .models import Game, ShoppingCart, CartItem, GameOwner, Review
+from .models import Game, ShoppingCart, CartItem, GameOwner, Review, Wallet, Receipt
+from .interfaces import PDFReceiptGenerator, TextReceiptGenerator
+
+from asgiref.sync import sync_to_async
+from twitchAPI.twitch import Twitch 
+from django.template.response import TemplateResponse
+
+# REST
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import status
+from .serializers import GamesSerializer
 
 
 # =========================HOME=========================
@@ -140,16 +151,31 @@ class Cart(LoginRequiredMixin, View):
 
         shopping_cart, created = ShoppingCart.objects.get_or_create(
             user=request.user)
+        
+        games = []
+
+        wallet, create = Wallet.objects.get_or_create(user=request.user)
 
         for game_id in games_id:
+
             game = get_object_or_404(Game, id=game_id)
 
-            game_owner, created = GameOwner.objects.get_or_create(
-                game=game, user=request.user)
-            if created:
-                game_owner.save()
+            if wallet.balance - game.price >= 0: 
+                game_owner, created = GameOwner.objects.get_or_create(
+                    game=game, user=request.user)
+                if created:
+                    game_owner.save()
+                wallet.balance -= game.price
+                wallet.save()
 
-        shopping_cart.cart_items.all().delete()
+                games.append(game)
+
+                shopping_cart.cart_items.get(game=game).delete()
+        
+        if len(games) > 0:
+            receipt = Receipt.objects.create(user=request.user)
+            receipt.save()
+            receipt.generate_receipt(games, TextReceiptGenerator)
 
         return redirect('cart')
 
@@ -160,6 +186,7 @@ class Account(LoginRequiredMixin, View):
 
     def get(self, request):
         owned_games = GameOwner.objects.filter(user=request.user)
+        wallet, created = Wallet.objects.get_or_create(user=request.user)
 
         if 'sort_by_name' in request.GET:
             owned_games = owned_games.select_related(
@@ -167,5 +194,42 @@ class Account(LoginRequiredMixin, View):
 
         return render(request, self.template_name, {
                       'user': request.user,
-                      'owned_games': owned_games
+                      'owned_games': owned_games,
+                      "wallet": wallet,
                       })
+    
+    def post(self, request):
+        balance = int(request.POST.get('balance', 0))
+        wallet = Wallet.objects.get(user=request.user)
+        wallet.balance += balance
+        wallet.save()
+
+        return redirect('account')
+
+
+# =========================REST=========================
+class GamesRest(APIView):
+    def get(self, request):
+        books = Game.objects.all()
+        serializer = GamesSerializer(books, many=True)
+        return Response(serializer.data)
+
+
+# =========================APItwitch=========================
+class twitchAPI(LoginRequiredMixin, View):
+    template_name = 'twitchAPI.html'
+    client_id = 'h3hmz0gxdnm0abf6hm3clfenrpa67x'
+    client_secret = 'g10zo38xq3b9f965e6758ru25ubzge'
+
+    def get(self, request):
+        # Initialize the Twitch client with credentials
+        twitch = Twitch(self.client_id, self.client_secret)
+        twitch.authenticate_app([])
+
+        # Call the Top Games endpoint
+        top_juegos = twitch.get_top_games(first=20)
+        juegos = top_juegos['data']
+
+        # Render the template with context
+        contexto = {'juegos': juegos}
+        return render(request, self.template_name, contexto)

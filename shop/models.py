@@ -1,6 +1,10 @@
 # Miguel Angel Cock Cano
 from django.db import models
 from django.contrib.auth.models import User
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
+from django.conf import settings
+import os
 
 
 # ========== GAME ==========
@@ -85,3 +89,19 @@ class Review(models.Model):
 
     def __str__(self):
         return f"REVIEW: {self.user.username} {self.game.title}"
+
+
+# ========== Wallet ==========
+class Wallet(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='user_wallet')
+    balance = models.IntegerField(default=0)
+
+
+class Receipt(models.Model):
+    from .interfaces import ReceiptGenerator
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='user_receipt')
+
+    def generate_receipt(self, games: list[Game], generator: ReceiptGenerator) -> str:
+        return generator.generate_receipt(self.user, games, self.id)
