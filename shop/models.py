@@ -99,35 +99,9 @@ class Wallet(models.Model):
 
 
 class Receipt(models.Model):
+    from .interfaces import ReceiptGenerator
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='user_receipt')
 
-    def generate_receipt(self, games: list[Game]):
-        # Define file path
-        file_path = os.path.join(settings.MEDIA_ROOT, f'receipts/receipt_{self.user.username}{self.id}.pdf')
-    
-        # Ensure the directory exists
-        os.makedirs(os.path.dirname(file_path), exist_ok=True)
-
-        c = canvas.Canvas(file_path, pagesize=A4)
-        
-        # Receipt content (example)
-        c.drawString(100, 800, f"Receipt for Order #{self.user.username}")
-        c.drawString(100, 780, "--------------------------------")
-        c.drawString(100, 760, "Item Name        Price")
-        
-        y_position = 740
-        total_price = 0
-        
-        # List items
-        for game in games:
-            c.drawString(100, y_position, f"{game.title}          ${game.price}")
-            total_price += game.price
-            y_position -= 20
-
-        # Add total price
-        c.drawString(100, y_position - 20, "--------------------------------")
-        c.drawString(100, y_position - 40, f"Total: ${total_price:.2f}")
-        
-        # Save the PDF
-        c.save() 
+    def generate_receipt(self, games: list[Game], generator: ReceiptGenerator) -> str:
+        return generator.generate_receipt(self.user, games, self.id)

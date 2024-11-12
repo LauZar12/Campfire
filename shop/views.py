@@ -7,6 +7,7 @@ from django.contrib.auth import login
 from .forms import SignUpForm
 from django.urls import reverse_lazy
 from .models import Game, ShoppingCart, CartItem, GameOwner, Review, Wallet, Receipt
+from .interfaces import PDFReceiptGenerator, TextReceiptGenerator
 
 # REST
 from rest_framework.response import Response
@@ -167,9 +168,10 @@ class Cart(LoginRequiredMixin, View):
 
                 shopping_cart.cart_items.get(game=game).delete()
         
-        receipt = Receipt.objects.create(user=request.user)
-        receipt.save()
-        receipt.generate_receipt(games)
+        if len(games) > 0:
+            receipt = Receipt.objects.create(user=request.user)
+            receipt.save()
+            receipt.generate_receipt(games, TextReceiptGenerator)
 
         return redirect('cart')
 
