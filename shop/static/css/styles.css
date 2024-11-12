@@ -179,7 +179,7 @@ body {
 button[type="submit"] {
     width: 100%;
     padding: 10px;
-    background-color: #403e3b; 
+    background-color: #000; 
     border: white;
     border-radius: 10px;
     color: white;
