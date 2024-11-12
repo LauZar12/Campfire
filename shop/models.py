@@ -1,12 +1,12 @@
 # Miguel Angel Cock Cano
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils.translation import gettext_lazy as _
 from reportlab.lib.pagesizes import A4
 from .interfaces import ReceiptGenerator
 from reportlab.pdfgen import canvas
 from django.conf import settings
 import os
+from django.utils.translation import gettext_lazy as _
 
 # ========== GAME ==========
 class Game(models.Model):

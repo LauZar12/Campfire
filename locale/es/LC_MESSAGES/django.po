@@ -1,0 +1,274 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-12 18:10-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? "
+"1 : 2;\n"
+#: .\shop\models.py:13
+msgid "title"
+msgstr "titulo"
+
+#: .\shop\models.py:14
+msgid "author"
+msgstr "autor"
+
+#: .\shop\models.py:15
+msgid "price"
+msgstr "precio"
+
+#: .\shop\models.py:16 .\shop\models.py:50
+msgid "description"
+msgstr "descripcion"
+
+#: .\shop\models.py:24 .\shop\models.py:42 .\shop\models.py:70
+msgid "quantity"
+msgstr "cantidad"
+
+#: .\shop\models.py:49
+msgid "name"
+msgstr "nombre"
+
+#: .\shop\models.py:80
+msgid "comment"
+msgstr "comentario"
+
+#: .\shop\models.py:82
+msgid "rating"
+msgstr "valoracion"
+
+#: .\shop\models.py:91
+msgid "balance"
+msgstr "balance"
+
+#: .\shop\templates\account.html:4 .\shop\templates\cart.html:4
+#: .\shop\templates\game.html:4 .\shop\templates\games.html:5
+#: .\shop\templates\logout.html:6
+msgid "Home Page - Online Store"
+msgstr "Pagina principal"
+
+#: .\shop\templates\account.html:29
+#, python-format
+msgid "By %(item.game.author)s"
+msgstr "por"
+
+#: .\shop\templates\account.html:33
+msgid "You don't own any games yet."
+msgstr "no tienes ningun juego aun"
+
+#: .\shop\templates\base.html:25
+msgid "Home"
+msgstr "casa"
+
+#: .\shop\templates\base.html:28
+msgid "games"
+msgstr "juego"
+
+#: .\shop\templates\base.html:29
+msgid "cart"
+msgstr "carro"
+
+#: .\shop\templates\base.html:30
+msgid "account"
+msgstr "cuenta"
+
+#: .\shop\templates\base.html:33
+msgid "Logout"
+msgstr "salir"
+
+#: .\shop\templates\base.html:37 .\shop\templates\login.html:6
+#: .\shop\templates\login.html:11 .\shop\templates\login.html:22
+msgid "Login"
+msgstr "ingresar"
+
+#: .\shop\templates\base.html:38
+msgid "Signup"
+msgstr "cuenta"
+
+#: .\shop\templates\base.html:52
+msgid "© 2024 Campfire - All Rights Reserved."
+msgstr "© 2024 Campfire - todos lo derechos reservados"
+
+#: .\shop\templates\cart.html:7
+msgid "Your Shopping Cart"
+msgstr "tu carrito de compras"
+
+#: .\shop\templates\cart.html:19
+#, python-format
+msgid "Quantity: %(item.quantity)s"
+msgstr "cantidad: %(item.cantidad)s "
+
+#: .\shop\templates\cart.html:27
+msgid "Buy Now"
+msgstr "comprar ahora"
+
+#: .\shop\templates\cart.html:31
+msgid "Your cart is empty."
+msgstr "tu carrito esta vacio"
+
+#: .\shop\templates\game.html:7
+msgid "Author:"
+msgstr "autor"
+
+#: .\shop\templates\game.html:8
+msgid "Price:"
+msgstr "Precio"
+
+#: .\shop\templates\game.html:9
+msgid "Description:"
+msgstr "descripcion"
+
+#: .\shop\templates\game.html:11
+msgid "Categories:"
+msgstr "Categorias"
+
+#: .\shop\templates\game.html:16
+msgid "No categories available."
+msgstr "ninguna categoria disponible"
+
+#: .\shop\templates\game.html:25
+msgid "Add a comment"
+msgstr "añadir un comentario"
+
+#: .\shop\templates\game.html:27
+msgid "Rating:"
+msgstr "valoracion"
+
+#: .\shop\templates\game.html:29
+msgid "1 - Poor"
+msgstr "pobre"
+
+#: .\shop\templates\game.html:30
+msgid "2 - Fair"
+msgstr "Justa"
+
+#: .\shop\templates\game.html:31
+msgid "3 - Good"
+msgstr "Buena"
+
+#: .\shop\templates\game.html:32
+msgid "4 - Very Good"
+msgstr "Muy buena"
+
+#: .\shop\templates\game.html:33
+msgid "5 - Excellent"
+msgstr "Excelente"
+
+#: .\shop\templates\game.html:36
+msgid "Comment game"
+msgstr "Comentar juego"
+
+#: .\shop\templates\game.html:45
+msgid "Sort by Rating"
+msgstr "Ordenar por calificacion"
+
+#: .\shop\templates\game.html:50
+msgid "Reviews:"
+msgstr "Reseñas"
+
+#: .\shop\templates\game.html:54
+msgid "rated this game"
+msgstr "Califico este juego"
+
+#: .\shop\templates\game.html:59
+msgid "No reviews yet for this game."
+msgstr "No reseñas para este juego aun"
+
+#: .\shop\templates\games.html:8
+msgid "List of Games"
+msgstr "Lista de juegos"
+
+#: .\shop\templates\games.html:37
+#, python-format
+msgid "By %(game.author)s - $%(game.price)s"
+msgstr "po %(juego.autor)s - $%(juego.precio)s"
+
+#: .\shop\templates\games.html:44
+msgid "See"
+msgstr "Ver"
+
+#: .\shop\templates\home.html:12
+msgid "Bienvenido a Campfire."
+msgstr "Bienvenido a Campfire."
+
+#: .\shop\templates\home.html:13
+msgid "El comienzo de tu próxima aventura. ⛺"
+msgstr "El comienzo de tu próxima aventura. ⛺"
+
+#: .\shop\templates\home.html:15
+msgid ""
+"\n"
+"          Explora y descubre juegos excepcionales, desde clásicos hasta las\n"
+"          últimas novedades. Únete a nuestra comunidad para discutir, "
+"comprar y jugar.\n"
+"          "
+msgstr ""
+
+#: .\shop\templates\login.html:15
+msgid "Username:"
+msgstr "Nombre de usuario"
+
+#: .\shop\templates\login.html:19
+msgid "Password:"
+msgstr "Contraseña"
+
+#: .\shop\templates\logout.html:10
+msgid "LOGOUT"
+msgstr "salir"
+
+#: .\shop\templates\signup.html:5
+msgid "Sign Up - Campfire"
+msgstr "entrar - Campfire"
+
+#: .\shop\templates\signup.html:10 .\shop\templates\signup.html:14
+msgid "Sign Up"
+msgstr "loguearse"
+
+#: .\shop\urls.py:9
+msgid "login/"
+msgstr "Entrar"
+
+#: .\shop\urls.py:10
+msgid "logout/"
+msgstr "Salir"
+
+#: .\shop\urls.py:11
+msgid "signup/"
+msgstr "Loguearse"
+
+#: .\shop\urls.py:12
+msgid "games/"
+msgstr "Juegos"
+
+#: .\shop\urls.py:13
+msgid "game/"
+msgstr "Juego"
+
+#: .\shop\urls.py:14
+msgid "cart/"
+msgstr "Carro"
+
+#: .\shop\urls.py:15
+msgid "account/"
+msgstr "Cuenta"
+
+#: .\shop\urls.py:16
+msgid "twitchAPI/"
+msgstr "twitchAPI"
+
+#: .\shop\urls.py:17
+msgid "gamesAPI/"
+msgstr "gamesAPI"

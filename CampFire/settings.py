@@ -110,26 +110,28 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 
-USE_L10N = True
-LANGUAGE_CODE = 'en-us'
+
+
 
 from django.utils.translation import gettext_lazy as _
 
 
 
 USE_I18N = True
-
+USE_L10N = True
 USE_TZ = True
-
-LANGUAGES = [
-    ('en', 'English'),
-    ('es', 'Spanish'),
-    ('fr', 'French'),  
-]
+LANGUAGE_CODE = 'en-us'
 
 LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),
 )
+
+LANGUAGES = [
+    ('en', 'English'),
+    ('es', 'Spanish'),  
+]
+
+
 
 TIME_ZONE = 'UTC'
 

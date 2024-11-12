@@ -53,5 +53,3 @@ class TextReceiptGenerator(ReceiptGenerator):
             file.write(receipt_content)
 
         return file_path
-
-
