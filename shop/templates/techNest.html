@@ -1,0 +1,28 @@
+<!-- Laura Danniela Zarate Guerrero y Moises Arrieta -->
+{% extends 'base.html' %}
+
+{% block title %}Product List - Online Store{% endblock %}
+
+{% block content %}
+<h1>List of Products</h1>
+
+<div class="products-container">
+    <div class="products-grid">
+        {% for product in products %}
+        <div class="product-card">
+            <div class="product-info">
+                <h2>{{ product.name }}</h2>
+                <p>Brand: {{ product.brand }}</p>
+                <p>Category: {{ product.category }}</p>
+                <p>${{ product.price }}</p>
+                <p>{{ product.description }}</p>
+                <p>Stock: {{ product.stock }}</p>
+            </div>
+            <div class="product-image">
+                <img src="{{ product.image }}" alt="Image of {{ product.name }}">
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
