@@ -1,4 +1,5 @@
 # Miguel Angel Cock Cano
+import requests
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import View, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -12,6 +13,10 @@ from .interfaces import PDFReceiptGenerator, TextReceiptGenerator
 from asgiref.sync import sync_to_async
 from twitchAPI.twitch import Twitch 
 from django.template.response import TemplateResponse
+
+
+
+from django.http import JsonResponse
 
 # REST
 from rest_framework.response import Response
@@ -233,3 +238,6 @@ class twitchAPI(LoginRequiredMixin, View):
         # Render the template with context
         contexto = {'juegos': juegos}
         return render(request, self.template_name, contexto)
+    
+    
+   
