@@ -7,6 +7,12 @@
 {% block content %}
 <h1>{% trans "List of Games" %}</h1>
 
+{% if dolar %}
+  <p>El precio del dólar (USD) en pesos colombianos (COP) es: {{ dolar }}</p>
+{% else %}
+  <p>No se pudo obtener el precio del dólar en este momento.</p>
+{% endif %}
+
 <!-- Formulario de búsqueda -->
 <div class="search-container">
   <form action="{% url 'games' %}" method="post">
