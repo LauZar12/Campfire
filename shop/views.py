@@ -1,4 +1,5 @@
 # Miguel Angel Cock Cano
+import requests
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import View, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -9,6 +10,13 @@ from django.urls import reverse_lazy
 from .models import Game, ShoppingCart, CartItem, GameOwner, Review, Wallet, Receipt
 from .interfaces import PDFReceiptGenerator, TextReceiptGenerator
 
+from asgiref.sync import sync_to_async
+from twitchAPI.twitch import Twitch 
+from django.template.response import TemplateResponse
+
+
+
+from django.http import JsonResponse
 from .utils import get_dolar
 
 # REST
@@ -214,3 +222,23 @@ class GamesRest(APIView):
         books = Game.objects.all()
         serializer = GamesSerializer(books, many=True)
         return Response(serializer.data)
+
+
+# =========================APItwitch=========================
+class twitchAPI(LoginRequiredMixin, View):
+    template_name = 'twitchAPI.html'
+    client_id = 'h3hmz0gxdnm0abf6hm3clfenrpa67x'
+    client_secret = 'g10zo38xq3b9f965e6758ru25ubzge'
+
+    def get(self, request):
+        # Initialize the Twitch client with credentials
+        twitch = Twitch(self.client_id, self.client_secret)
+        twitch.authenticate_app([])
+
+        # Call the Top Games endpoint
+        top_juegos = twitch.get_top_games(first=20)
+        juegos = top_juegos['data']
+
+        # Render the template with context
+        contexto = {'juegos': juegos}
+        return render(request, self.template_name, contexto)
