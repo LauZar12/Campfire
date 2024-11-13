@@ -2,3 +2,4 @@ reportlab
 djangorestframework
 Faker
 twitchAPI
+requests

@@ -10,13 +10,8 @@ from django.urls import reverse_lazy
 from .models import Game, ShoppingCart, CartItem, GameOwner, Review, Wallet, Receipt
 from .interfaces import PDFReceiptGenerator, TextReceiptGenerator
 
-from asgiref.sync import sync_to_async
-from twitchAPI.twitch import Twitch 
-from django.template.response import TemplateResponse
-
-
-
 from django.http import JsonResponse
+from .utils import get_dolar
 
 # REST
 from rest_framework.response import Response
@@ -63,6 +58,8 @@ class Games(LoginRequiredMixin, View):
     def get(self, request):
         sort_by_price = request.GET.get('sort_by_price', None)
 
+        dolar = get_dolar()
+
         if sort_by_price == 'asc':
             games = Game.objects.all().order_by('price')  # Sort ascending
         elif sort_by_price == 'desc':
@@ -72,6 +69,7 @@ class Games(LoginRequiredMixin, View):
 
         return render(request, self.template_name, {
             'games': games,
+            'dolar': dolar
         })
 
     def post(self, request):
@@ -220,26 +218,7 @@ class GamesRest(APIView):
         return Response(serializer.data)
 
 
-# =========================APItwitch=========================
-class twitchAPI(LoginRequiredMixin, View):
-    template_name = 'twitchAPI.html'
-    client_id = 'h3hmz0gxdnm0abf6hm3clfenrpa67x'
-    client_secret = 'g10zo38xq3b9f965e6758ru25ubzge'
-
-    def get(self, request):
-        # Initialize the Twitch client with credentials
-        twitch = Twitch(self.client_id, self.client_secret)
-        twitch.authenticate_app([])
-
-        # Call the Top Games endpoint
-        top_juegos = twitch.get_top_games(first=20)
-        juegos = top_juegos['data']
-
-        # Render the template with context
-        contexto = {'juegos': juegos}
-        return render(request, self.template_name, contexto)
-    
-    
+# =========================ALIES=========================
 def productos_aliados(request):
     url = "https://app-553255522197.us-central1.run.app/api/products/"
     try:
