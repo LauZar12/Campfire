@@ -7,13 +7,12 @@ import os
 
 class ReceiptGenerator(ABC):
     @abstractmethod
-    def generate_receipt(self, user: User, games: list, id: int) -> str:
+    def generate_receipt(user: User, games: list, id: int) -> str:
         """Generate a receipt in some format"""
         pass
 
 class PDFReceiptGenerator(ReceiptGenerator):
-    def generate_receipt(self, user: User, games: list, id: int) -> str:
-        from .models import Game  # Local import to avoid circular dependency
+    def generate_receipt(user: User, games: list, id: int) -> str:
         file_path = os.path.join(settings.MEDIA_ROOT, f'receipts/receipt_{user.username}{id}.pdf')
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
         
@@ -32,8 +31,7 @@ class PDFReceiptGenerator(ReceiptGenerator):
         return file_path
 
 class TextReceiptGenerator(ReceiptGenerator):
-    def generate_receipt(self, user: User, games: list, id: int) -> str:
-        from .models import Game  # Local import to avoid circular dependency
+    def generate_receipt(user: User, games: list, id: int) -> str:
         file_path = os.path.join(settings.MEDIA_ROOT, f'receipts/receipt_{user.username}{id}.txt')
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
 

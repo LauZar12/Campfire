@@ -10,10 +10,10 @@ from django.utils.translation import gettext_lazy as _
 
 # ========== GAME ==========
 class Game(models.Model):
-    title = models.CharField(_("title"), max_length=255)
-    author = models.CharField(_("author"), max_length=255)
-    price = models.IntegerField(_("price"))
-    description = models.TextField(_("description"))
+    title = models.CharField(max_length=255)
+    author = models.CharField(max_length=255)
+    price = models.IntegerField()
+    description = models.TextField()
 
     def __str__(self):
         return f"GAME: {self.title}"
@@ -21,7 +21,7 @@ class Game(models.Model):
 class Stock(models.Model):
     game = models.ForeignKey(
         Game, on_delete=models.CASCADE, related_name='stock')
-    quantity = models.PositiveIntegerField(_("quantity"), default=1)
+    quantity = models.PositiveIntegerField(default=1)
 
     def __str__(self):
         return f"STOCK: {self.game.title} {self.quantity}"
@@ -39,15 +39,15 @@ class CartItem(models.Model):
         ShoppingCart, on_delete=models.CASCADE, related_name='cart_items')
     game = models.ForeignKey(
         Game, on_delete=models.CASCADE, related_name='cart_items')
-    quantity = models.PositiveIntegerField(_("quantity"), default=1)
+    quantity = models.PositiveIntegerField(default=1)
 
     def __str__(self):
         return f"CART_ITEM: {self.game.title} {self.quantity}"
 
 # ========== CATEGORIES ==========
 class Category(models.Model):
-    name = models.CharField(_("name"), max_length=255)
-    description = models.CharField(_("description"), max_length=255)
+    name = models.CharField(max_length=255)
+    description = models.CharField(max_length=255)
 
     def __str__(self):
         return f"CATEGORY: {self.name}"
@@ -67,7 +67,7 @@ class GameOwner(models.Model):
         User, on_delete=models.CASCADE, related_name='game_owner')
     game = models.ForeignKey(
         Game, on_delete=models.CASCADE, related_name='game_owner')
-    quantity = models.PositiveIntegerField(_("quantity"), default=1)
+    quantity = models.PositiveIntegerField(default=1)
 
     def __str__(self):
         return f"GAME_OWNER: {self.user.username} {self.game.title}"
@@ -77,9 +77,9 @@ class Review(models.Model):
         User, on_delete=models.CASCADE, related_name='review')
     game = models.ForeignKey(
         Game, on_delete=models.CASCADE, related_name='review')
-    comment = models.CharField(_("comment"), max_length=255)
+    comment = models.CharField(max_length=255)
     rating = models.IntegerField(
-        _("rating"), default=1, choices=[(i, i) for i in range(1, 6)])
+        default=1, choices=[(i, i) for i in range(1, 6)])
 
     def __str__(self):
         return f"REVIEW: {self.user.username} {self.game.title}"
@@ -88,11 +88,11 @@ class Review(models.Model):
 class Wallet(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='user_wallet')
-    balance = models.IntegerField(_("balance"), default=0)
+    balance = models.IntegerField(default=0)
 
 class Receipt(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='user_receipt')
 
-    def generate_receipt(self, games: list[Game], generator: ReceiptGenerator) -> str:
+    def generate_receipt(self, games: list, generator: ReceiptGenerator) -> str:
         return generator.generate_receipt(self.user, games, self.id)
