@@ -25,6 +25,7 @@
       <li><a href="{% url 'home' %}">{% trans 'Home' %}</a></li>
       {% if user.is_authenticated %}
       <!-- Display when the user is logged in -->
+      <li><a href="{% url 'productos_aliados' %}">{% trans 'alies' %}</a></li>
       <li><a href="{% url 'games' %}">{% trans 'games' %}</a></li>
       <li><a href="{% url 'cart' %}">{% trans 'cart' %}</a></li>
       <li><a href="{% url 'account' %}">{% trans 'account' %}, {{ user.username }}</a></li>
