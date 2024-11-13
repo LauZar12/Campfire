@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Productos Aliados - Online Store" %}{% endblock %}
+
+{% block content %}
+
+<h1>{% trans "Productos Aliados" %}</h1>
+
+{% if productos %}
+<div class="games-container">
+  <div class="games-grid">
+    {% for producto in productos %}
+    <div class="game-card">
+      <div class="game-info">
+        <h2>{{ producto.name }}</h2>
+        <p>{% trans "Precio:" %} ${{ producto.price }}</p>
+        <p><a href="{{ producto.url }}" target="_blank">{% trans "Ver producto" %}</a></p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% else %}
+<h2>{% trans "No hay productos disponibles en este momento." %}</h2>
+{% endif %}
+
+{% endblock %}

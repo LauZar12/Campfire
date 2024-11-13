@@ -240,4 +240,14 @@ class twitchAPI(LoginRequiredMixin, View):
         return render(request, self.template_name, contexto)
     
     
-   
+def productos_aliados(request):
+    url = "https://app-553255522197.us-central1.run.app/api/products/"
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        productos = response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"Error al obtener productos aliados: {e}")
+        productos = []
+
+    return render(request, 'productos_aliados.html', {'productos': productos})
